@@ -47,6 +47,9 @@ def index():
         print("Error fetching data from database:", e)
         return render_template('error.html', error=str(e))
 
+import base64
+
+
 @app.route('/classify', methods=['POST'])
 def classify():
     try:
@@ -88,7 +91,6 @@ def classify():
                     boxes.append([x, y, w, h])
                     confidences.append(float(confidence))
                     class_ids.append(class_id)
-        print("Objects detected by YOLO:", class_ids)
 
         indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
         print("Non-maximum suppression performed")
@@ -107,11 +109,25 @@ def classify():
                                    (class_name, 1))
                     print("Inserted new object into database:", class_name)
                 db.commit()
+        
+        # Draw bounding boxes on the image outside the loop
+        for i in range(len(boxes)):
+            if i in indexes:
+                x, y, w, h = boxes[i]
+                class_name = classes[class_ids[i]]
+                color = (0, 255, 0)  # Green color for the bounding box
+                cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+                cv2.putText(img, class_name, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-        return redirect('/')  # Redirect to the homepage after processing the image
+        # Convert the modified image to base64 for displaying in HTML
+        _, img_encoded = cv2.imencode('.jpg', img)
+        img_base64 = base64.b64encode(img_encoded).decode('utf-8')
+
+        return render_template('result.html', img_base64=img_base64)  # Render template with image
     except Exception as e:
         print("Error during classification:", e)
         return render_template('error.html', error=str(e))
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
