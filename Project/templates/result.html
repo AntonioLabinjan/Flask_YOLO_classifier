@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Classification Results</title>
+    <style>
+        .classified-image {
+            max-width: 80%;
+            max-height: 80vh;
+            margin: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Classified Image</h1>
+    <img src="data:image/jpeg;base64,{{ img_base64 }}" alt="Classified Image" class="classified-image">
+    <br>
+    <form action="/" method="get">
+        <button type="submit">Go Back</button>
+    </form>
+</body>
+</html>
