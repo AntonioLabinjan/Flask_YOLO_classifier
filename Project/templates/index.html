@@ -11,7 +11,7 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
-        h1 {
+        h1, h2, h3, h4 {
             margin-bottom: 20px;
             text-align: center;
         }
@@ -50,10 +50,25 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .button-container a:hover {
+            background-color: #005f6b;
+        }
     </style>
 </head>
 <body>
-    <h1>Classified Objects</h1>
+    <h4>Classified Objects(using images)...I don't have a clue how to implement saving of live-detected objects, but nevermind</h4>
     <table>
         <tr>
             <th>Class</th>
@@ -70,5 +85,8 @@
         <input type="file" name="image" accept="image/*">
         <input type="submit" value="Classify Image">
     </form>
+    <div class="button-container">
+        <a href="{{ url_for('live_feed') }}">Go to Live Video Feed</a>
+    </div>
 </body>
 </html>
